@@ -1,8 +1,10 @@
 {
-    "cmd" : "/home/user/sandbox/mycommand",
+    "cmd" : "/home/snegovik/sandbox/repo/ufsim-office",
     "build_args" : {
-        "MyBuild" : ["/home/user/sandbox/test-models/Test1/test1.dat"],
-        "AwesomeBuild" : ["/home/user/sandbox/test-models/Test2/test2.DAT"]
+        "CVI" : ["/home/snegovik/sandbox/test-models/CVI_lost/CVI1.dat"],
+        "Kushnarenk" : ["/home/snegovik/sandbox/test-models/model/kushnarenk.DAT"],
+        "Saitov" : ["/home/snegovik/sandbox/test-models/model_Саитовское_пласт_Дкн2_залежь1/more_event/TTD.dat"],
+        "TestModel" : ["/home/snegovik/sandbox/repo/test/python/data/dac2_1z/Dac2_1z.dat"]
     },
-    "dir" : "/home/user/sandbox"
+    "dir" : "/home/snegovik/sandbox/repo"
 }
