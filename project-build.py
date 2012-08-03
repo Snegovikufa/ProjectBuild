@@ -44,8 +44,10 @@ class ProjectBuildCommand(sublime_plugin.TextCommand):
 
     def execute_cmd (self, args):
         cmd = " ".join ([settings.get ('cmd')] + args)
+        cwd = settings.get ("dir")
         proc = subprocess.Popen(
             cmd, shell=True,
+            cwd = cwd,
             bufsize=1024,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)

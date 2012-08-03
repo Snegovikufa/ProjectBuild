@@ -42,8 +42,9 @@ Features / Usage
             "cmd" : "/home/user/sandbox/mycommand",
             "build_args" : {
                 "MyBuild" : ["/home/user/sandbox/test-models/Test1/test1.dat"],
-                "AwesomeBuild" : ["/home/user/sandbox/test-models/Test2/test2.DAT"],
-            }
+                "AwesomeBuild" : ["/home/user/sandbox/test-models/Test2/test2.DAT"]
+            },
+            "dir" : "/home/user/sandbox/"
         }
 
 
