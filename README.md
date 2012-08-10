@@ -12,11 +12,11 @@ Now ProjectBuild does not support platform-specific data in the Build System. Ma
 Install
 -------
 
-Download the latest source from [GitHub](https://github.com/Snegovikufa/ProjectBuild) and copy *ProjectBuild* folder to your ST2 "Packages" directory.
+Download the latest source from [GitHub](https://github.com/BorisPlus/ProjectBuild) and copy *ProjectBuild* folder to your ST2 "Packages" directory.
 
 Or clone the repository to your ST2 "Packages" directory:
 
-    git clone https://github.com/Snegovikufa/ProjectBuild.git
+    git clone https://github.com/BorisPlus/ProjectBuild.git
 
 
 The "Packages" directory is located at:
