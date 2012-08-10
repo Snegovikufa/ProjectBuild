@@ -31,4 +31,4 @@ class ProjectBuildCommand(sublime_plugin.TextCommand):
         self.view.window ().show_quick_panel (keys, run)
 
     def execute_cmd (self, variant):
-        self.view.window().run_command("build", variant)
+        self.view.window().run_command("build", {"variant" : variant})
