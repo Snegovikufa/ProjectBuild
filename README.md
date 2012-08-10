@@ -1,7 +1,12 @@
 ProjectBuild
 ============
 
-ProjectBuild is a Sublime Text 2 plugin for running build command with variable arguments selection.
+ProjectBuild is a Sublime Text 2 plugin for running Build command with its variants.
+Just choose Build System "Tools"->"Build System" (it can be standart or your own), 
+save Sublime project in some root folder of your project, press "Shift+F10" so you can see 
+quickpanel with Build System variants. Also you can use standart "F7", "Ctrl+B" and "Ctrl+Shift+B"
+key bindings.
+Now ProjectBuild does not support platform-specific data in the Build System. May be we fix this later.
 
 
 Install
@@ -31,36 +36,32 @@ The "Packages" directory is located at:
 Features / Usage
 ----------------
 
- * Edit your key bindings like this:
+ * Edit your key bindings "Preferences"->"Key Bindings - User" like this:
 
         [
           { "keys": ["shift+f10"], "command" : "project_build"}
         ]
- * Run Preferences - Package Settings - Project Build - Settings. Edit like this: 
 
+ * For example we create our own Build System "Tools"->"Build System"->"New Build System" like this:
+
+        # file AntBuildSystem.sublime-build
+        # Don`t foget choose it and save Sublime project in some root folder
         {
-            "file" : "MyOwnBuild.sublime-build",
-        }
-
- * Create your own build file: Tools - Build system - New build system. Edit like this:
-
-        {
-            "cmd" : ["/home/user/command"],
-            "working_dir" : "${project_path}",
-            "variants" : [
+            "cmd": ["ant.bat"],
+            "working_dir": "${project_path}",
+            "variants" : [ 
                 {
-                    "name" : "AwesomeBuild",
-                    "cmd" : ["/home/user/command", "init"]
+                    "name": "Init",
+                    "cmd": ["ant.bat", "init"]
+                    
                 },
                 {
-                    "name : "MyBuild",
-                    "cmd" : ["/home/user/command", "run"]
+                    "name": "Run",
+                    "cmd": ["ant.bat", "trial"]
                 }
             ]
         }
 
-
- * Hit Shift + F10 and select arguments for build.
+ * Hit "Shift+F10" and select arguments for build.
 
 ![Error list](http://img844.imageshack.us/img844/7721/201208031142312960x1050.png)
-
