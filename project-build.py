@@ -1,25 +1,7 @@
 import sublime
 import sublime_plugin
-import subprocess
-import sys
-import threading
 
 settings = sublime.load_settings("ProjectBuild.sublime-settings")
-
-
-class LogThread(threading.Thread):
-    def __init__ (self, proc) :
-        super (LogThread, self).__init__()
-        self._proc = proc
-
-    def run(self):
-        proc = self._proc
-        while proc.poll () is None:
-            inline = proc.stderr.readline()
-            if not inline:
-                break
-            sys.stderr.write(inline)
-            sys.stderr.flush()
 
 
 class ProjectBuildCommand(sublime_plugin.TextCommand):
@@ -34,22 +16,19 @@ class ProjectBuildCommand(sublime_plugin.TextCommand):
             self.view.run_command('save')
 
         def run (selected):
-            self.execute_cmd (values[selected])
+            self.execute_cmd (keys[selected])
 
-        args = settings.get('build_args')
-        keys = sorted ([key for key in args])
-        values = [args[key] for key in keys]
+        f = settings.get('file')
+        self._buildSettings = sublime.load_settings (f)
+        self._variants = {}
+        for variant in self._buildSettings.get ('variants') :
+            key = variant['name']
+            self._variants[key] = variant['cmd']
+
+        keys = []
+        keys = sorted (self._variants.keys())
 
         self.view.window ().show_quick_panel (keys, run)
 
-    def execute_cmd (self, args):
-        cmd = " ".join ([settings.get ('cmd')] + args)
-        cwd = settings.get ("dir")
-        proc = subprocess.Popen(
-            cmd, shell=True,
-            cwd = cwd,
-            bufsize=1024,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-
-        LogThread (proc).start ()
+    def execute_cmd (self, variant):
+        self.view.window().run_command("build", variant)
