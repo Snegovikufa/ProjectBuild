@@ -39,12 +39,24 @@ Features / Usage
  * Run Preferences - Package Settings - Project Build - Settings. Edit like this: 
 
         {
-            "cmd" : "/home/user/sandbox/mycommand",
-            "build_args" : {
-                "MyBuild" : ["/home/user/sandbox/test-models/Test1/test1.dat"],
-                "AwesomeBuild" : ["/home/user/sandbox/test-models/Test2/test2.DAT"]
-            },
-            "dir" : "/home/user/sandbox/"
+            "file" : "MyOwnBuild.sublime-build",
+        }
+
+ * Create your own build file: Tools - Build system - New build system. Edit like this:
+
+        {
+            "cmd" : ["/home/user/command"],
+            "working_dir" : "${project_path}",
+            "variants" : [
+                {
+                    "name" : "AwesomeBuild",
+                    "cmd" : ["/home/user/command", "init"]
+                },
+                {
+                    "name : "MyBuild",
+                    "cmd" : ["/home/user/command", "run"]
+                }
+            ]
         }
 
 
