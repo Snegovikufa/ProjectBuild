@@ -8,16 +8,14 @@ quickpanel with Build System variants. Also you can use standart "F7", "Ctrl+B" 
 key bindings.
 Now ProjectBuild does not support platform-specific data in the Build System. May be we fix this later.
 
-
 Install
 -------
 
-Download the latest source from [GitHub](https://github.com/BorisPlus/ProjectBuild) and copy *ProjectBuild* folder to your ST2 "Packages" directory.
+Download the latest source from [GitHub](https://github.com/BorisPlus/ProjectBuild) and copy *ProjectBuild* folder to your Sublime Text 2 "Packages" directory.
 
-Or clone the repository to your ST2 "Packages" directory:
+Or clone the repository to your Sublime Text 2 "Packages" directory:
 
     git clone https://github.com/BorisPlus/ProjectBuild.git
-
 
 The "Packages" directory is located at:
 
