@@ -69,3 +69,9 @@ Features / Usage
 ![image](https://raw.github.com/BorisPlus/ProjectBuild/master/ProjectBuild.png)
 
 ![image](https://raw.github.com/BorisPlus/ProjectBuild/master/ProjectBuild%20with%20comment.png)
+
+Authors
+-------
+
+ * Snegovikufa (Rustam Safin) (https://github.com/Snegovikufa)
+ * BorisPlus (Borisov ILYA) (https://github.com/BorisPlus)
