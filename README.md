@@ -65,3 +65,5 @@ Features / Usage
  * Hit "Shift+F10" and select arguments for build.
 
 ![Error list](http://img844.imageshack.us/img844/7721/201208031142312960x1050.png)
+(https://raw.github.com/BorisPlus/ProjectBuild/master/ProjectBuild.png)
+(https://raw.github.com/BorisPlus/ProjectBuild/master/ProjectBuild%20with%20comment.png)
