@@ -8,14 +8,22 @@ quickpanel with Build System variants. Also you can use standart "F7", "Ctrl+B" 
 key bindings.
 Now ProjectBuild does not support platform-specific data in the Build System. May be we fix this later.
 
+
+Authors
+-------
+
+ * Snegovikufa (Rustam Safin) (https://github.com/Snegovikufa)
+ * BorisPlus (Borisov ILYA) (https://github.com/BorisPlus)
+
+
 Install
 -------
 
-Download the latest source from [GitHub](https://github.com/BorisPlus/ProjectBuild) and copy *ProjectBuild* folder to your Sublime Text 2 "Packages" directory.
+Download the latest source from [GitHub](https://github.com/Snegovikufa/ProjectBuild) and copy *ProjectBuild* folder to your Sublime Text 2 "Packages" directory.
 
 Or clone the repository to your Sublime Text 2 "Packages" directory:
 
-    git clone https://github.com/BorisPlus/ProjectBuild.git
+    git clone https://github.com/Snegovikufa/ProjectBuild.git
 
 The "Packages" directory is located at:
 
@@ -40,10 +48,10 @@ Features / Usage
           { "keys": ["shift+f10"], "command" : "project_build"}
         ]
 
- * For example we create our own Build System "Tools"->"Build System"->"New Build System" like this:
+ * Create your own Build System "Tools"->"Build System"->"New Build System" like this:
 
-        # file AntBuildSystem.sublime-build
-        # Don`t foget choose it and save Sublime project in some root folder
+        # File AntBuildSystem.sublime-build
+        # Don`t forget to choose it as active and save .sublime-build file in project's root folder
         {
             "cmd": ["ant.bat"],
             "working_dir": "${project_path}",
@@ -51,7 +59,6 @@ Features / Usage
                 {
                     "name": "Init",
                     "cmd": ["ant.bat", "init"]
-                    
                 },
                 {
                     "name": "Run",
@@ -60,16 +67,11 @@ Features / Usage
             ]
         }
 
- * Hit "Shift+F10" and select arguments for build.
+ * Press "Shift+F10" and select arguments for build.
 
 ![Error list](http://img844.imageshack.us/img844/7721/201208031142312960x1050.png)
 
-![image](https://raw.github.com/BorisPlus/ProjectBuild/master/ProjectBuild.png)
+![image](https://raw.github.com/Snegovikufa/ProjectBuild/master/ProjectBuild.png)
 
-![image](https://raw.github.com/BorisPlus/ProjectBuild/master/ProjectBuild%20with%20comment.png)
+![Comment](https://raw.github.com/Snegovikufa/ProjectBuild/master/ProjectBuild%20with%20comment.png)
 
-Authors
--------
-
- * Snegovikufa (Rustam Safin) (https://github.com/Snegovikufa)
- * BorisPlus (Borisov ILYA) (https://github.com/BorisPlus)
