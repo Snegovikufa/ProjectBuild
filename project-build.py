@@ -42,16 +42,49 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
         # Loading build system from workspace_file
         #
         with open (workspace_file) as f :
-            workspace_json_data = json.load (f, strict = False)
+            try:
+                workspace_json_data = json.load (f, strict = False)
+            except Exception, e:
+                sublime.error_message (
+                    'ProjectBuild:\n\n'
+                    'File .sublime-workspace is empty or has incorrect json data')
+                return
 
         if not 'build_system' in workspace_json_data :
             sublime.error_message (
                 'ProjectBuild:\n\n'
                 'There are no "build_system" value in %s file.\n'
                 'Choose build and save project''' % workspace_file)
+            return
 
         build_filename = workspace_json_data['build_system']
-        build_sys_file = os.path.join (os.path.dirname (sublime.packages_path ()), build_filename)
+
+        candidates = [
+            os.path.join (sublime.packages_path (), build_filename),
+            os.path.join (sublime.packages_path (), "User", build_filename),
+            os.path.join (sublime.packages_path (), "ProjectBuild", build_filename)]
+        build_sys_file = None
+        for candidate in candidates :
+            if os.path.exists (candidate) :
+                build_sys_file = candidate
+                break
+
+        if build_sys_file is None :
+            sublime.error_message (
+                'ProjectBuild:\n\n'
+                'No such file or directory: %s'
+                % build_sys_file)
+            return
+
+        with open (build_sys_file) as f :
+            try:
+                json_data = json.load (f)
+            except Exception, e:
+                sublime.error_message (
+                    'ProjectBuild:\n\n'
+                    'File %s is empty or has incorrect json data'
+                    % build_sys_file)
+                return
         ############################################
 
         ############################################
@@ -61,15 +94,14 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
         # support platform-specific data in the
         # Build System. It may be fixed later.
         #
-        with open (build_sys_file) as f :
-            json_data = json.load (f)
+        build_variants = []
 
-        build_variants = {}
-        if 'cmd' in json_data :
-            build_variants['Default'] = " ".join (json_data['cmd'])
-        if 'variants' in json_data :
-            for k in json_data['variants'] :
-                build_variants[k['name']] = " ".join (k['cmd'])
+        if "cmd" in json_data:
+            build_variants.append (['Default', " ".join (json_data["cmd"])])
+
+        for variant in json_data.get ("variants", {}) :
+            build_variants.append (
+                [variant['name'], " ".join (variant['cmd'])])
         ############################################
 
 
@@ -79,9 +111,10 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
         # build variants.
         def run (selected) :
             if (selected >= 0) :
-                self.execute_variant (build_variants.items ()[selected][0])
+                self.execute_variant (build_variants[selected][0])
 
-        self.view.window ().show_quick_panel (build_variants.keys(), run)
+        names = [name for name, args in build_variants]
+        self.view.window ().show_quick_panel (names, run)
         ######################################################
 
     def execute_variant (self, variant_name) :
