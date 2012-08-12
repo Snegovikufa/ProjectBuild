@@ -22,16 +22,14 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
                     if  workspace_file == "" :
                         workspace_file = os.path.join (dir_, dir_item)
                     else :
-                        sublime.error_message (
-                            'ProjectBuild:\n\n'
+                        self.showError (
                             'Must be only one ".sublime-workspace" file in project root folder.\n'
                             'Plugin found %s and %s files.' %
                             (workspace_file, os.path.join (dir_, dir_item)))
                         return
 
         if workspace_file == "" :
-            sublime.error_message (
-                'ProjectBuild:\n\n'
+            self.showError (
                 'Missing ".sublime-workspace" file.\n'
                 'There are no ".sublime-workspace" file in any root folder of project.')
             return
@@ -45,14 +43,12 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
             try:
                 workspace_json_data = json.load (f, strict = False)
             except Exception, e:
-                sublime.error_message (
-                    'ProjectBuild:\n\n'
+                self.showError (
                     'File .sublime-workspace is empty or has incorrect json data')
                 return
 
         if not 'build_system' in workspace_json_data :
-            sublime.error_message (
-                'ProjectBuild:\n\n'
+            self.showError (
                 'There are no "build_system" value in %s file.\n'
                 'Choose build and save project''' % workspace_file)
             return
@@ -70,8 +66,7 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
                 break
 
         if build_sys_file is None :
-            sublime.error_message (
-                'ProjectBuild:\n\n'
+            self.showError (
                 'No such file or directory: %s'
                 % build_sys_file)
             return
@@ -80,8 +75,7 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
             try:
                 json_data = json.load (f)
             except Exception, e:
-                sublime.error_message (
-                    'ProjectBuild:\n\n'
+                self.showError (
                     'File %s is empty or has incorrect json data'
                     % build_sys_file)
                 return
@@ -119,3 +113,7 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
 
     def execute_variant (self, variant_name) :
         self.view.window ().run_command ("build", {"variant": variant_name})
+
+    def showError (self, err) :
+        sublime.error_message ('ProjectBuild:\n\n%s' % err)
+

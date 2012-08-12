@@ -50,12 +50,10 @@ Features / Usage
 
  * Create your own Build System "Tools"->"Build System"->"New Build System" like this:
 
-        # File AntBuildSystem.sublime-build
-        # Don`t forget to choose it as active and save .sublime-build file in project's root folder
         {
             "cmd": ["ant.bat"],
             "working_dir": "${project_path}",
-            "variants" : [ 
+            "variants" : [
                 {
                     "name": "Init",
                     "cmd": ["ant.bat", "init"]
@@ -67,11 +65,15 @@ Features / Usage
             ]
         }
 
+ * Create <name>.sublime-workspace file in project root folder and edit like this :
+
+        {
+            "build-system" : "Your_build_system_name.sublime-build"
+        }
+
  * Press "Shift+F10" and select arguments for build.
 
 ![Error list](http://img844.imageshack.us/img844/7721/201208031142312960x1050.png)
-
-![image](https://raw.github.com/Snegovikufa/ProjectBuild/master/ProjectBuild.png)
 
 ![Comment](https://raw.github.com/Snegovikufa/ProjectBuild/master/ProjectBuild%20with%20comment.png)
 
