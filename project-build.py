@@ -1,8 +1,12 @@
-import sublime
+﻿import sublime
 import sublime_plugin
 import json
 import sys
 import os
+
+# If you want use Non-ASCII characters 
+# (for example, Russian) in comments here
+# you must save this file in UTF-8 encoding with BOM
 
 class ProjectBuildCommand (sublime_plugin.TextCommand) :
     def run (self, edit = None) :
@@ -12,32 +16,33 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
 
         ############################################
         # 
-        # Detecting build system file
+        # Detecting workspace file
         #
-        workspace_file = ""
+        workspace_file = None
         root_folders = self.view.window ().folders ()
         for dir_ in root_folders :
             for dir_item in os.listdir (dir_) :
                 if  dir_item.endswith ('.sublime-workspace') :
-                    if  workspace_file == "" :
-                        workspace_file = os.path.join (dir_, dir_item)
+                    if  workspace_file == None :
+                        workspace_file = os.path.join (os.path.normpath(dir_), dir_item)
                     else :
                         self.showError (
                             'Must be only one ".sublime-workspace" file in project root folder.\n'
                             'Plugin found %s and %s files.' %
                             (workspace_file, os.path.join (dir_, dir_item)))
                         return
-
-        if workspace_file == "" :
+        if workspace_file == None :
             self.showError (
-                'Missing ".sublime-workspace" file.\n'
                 'There are no ".sublime-workspace" file in any root folder of project.')
             return
+        self.debug(workspace_file) 
+        # 
         ############################################
 
         ############################################
         #
-        # Loading build system from workspace_file
+        # Get build system filename 
+        # from workspace file
         #
         with open (workspace_file) as f :
             try:
@@ -46,39 +51,56 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
                 self.showError (
                     'File .sublime-workspace is empty or has incorrect json data')
                 return
-
         if not 'build_system' in workspace_json_data :
             self.showError (
                 'There are no "build_system" value in %s file.\n'
-                'Choose build and save project''' % workspace_file)
+                'Choose Build System and save project.' % workspace_file)
             return
-
         build_filename = workspace_json_data['build_system']
+        self.debug(build_filename)         
+        # 
+        ############################################
+        
+        ############################################
+        #
+        # Detect Build System file
+        # 
+        # "build_system" variable have mask-pattern of its value like 
+        # "Packages/User/{YourOwnBuildSystem}.sublime-build" or
+        # "Packages/{SomePackage}/{SomePackageBulidSystem}.sublime-build" or
+	# "" - empty      
+	#
+	# Sublime Text 2 documentation:         
+        # "Build systems must be located somewhere 
+	# under the Packages folder (e.g. Packages/User).
+	# Many packages include their own build systems."
+	#
+        # so full path to Build System file is uniquely determined
 
-        candidates = [
-            os.path.join (sublime.packages_path (), build_filename),
-            os.path.join (sublime.packages_path (), "User", build_filename),
-            os.path.join (sublime.packages_path (), "ProjectBuild", build_filename)]
-        build_sys_file = None
-        for candidate in candidates :
-            if os.path.exists (candidate) :
-                build_sys_file = candidate
-                break
-
-        if build_sys_file is None :
+        build_filename_fullpath = os.path.normpath(os.path.join(os.path.dirname(sublime.packages_path()),build_filename))
+	# it must be exist and it must be a file
+        if not(os.path.isfile(build_filename_fullpath)):
             self.showError (
-                'No such file or directory: %s'
-                % build_sys_file)
-            return
+                'Plugin could not find Build System file: "%s".' %
+                build_filename_fullpath)
+            return        
+        self.debug(build_filename_fullpath)         
+        # 
+        ############################################
 
-        with open (build_sys_file) as f :
+        ############################################
+        #
+        # Load data from Build System file
+        #
+        with open (build_filename_fullpath) as f :
             try:
                 json_data = json.load (f)
             except Exception, e:
                 self.showError (
-                    'File %s is empty or has incorrect json data'
-                    % build_sys_file)
+                    'File %s is empty or has incorrect json data' %
+		     build_filename_fullpath)
                 return
+        #
         ############################################
 
         ############################################
@@ -96,24 +118,32 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
         for variant in json_data.get ("variants", {}) :
             build_variants.append (
                 [variant['name'], " ".join (variant['cmd'])])
+        #
         ############################################
-
-
+ 
         ############################################
         #
         # Creating and showing quick panel with 
         # build variants.
+        # 
         def run (selected) :
             if (selected >= 0) :
                 self.execute_variant (build_variants[selected][0])
 
         names = [name for name, args in build_variants]
         self.view.window ().show_quick_panel (names, run)
-        ######################################################
+        #
+        ############################################
 
     def execute_variant (self, variant_name) :
         self.view.window ().run_command ("build", {"variant": variant_name})
 
     def showError (self, err) :
+        # sometime error_message does not be shown
         sublime.error_message ('ProjectBuild:\n\n%s' % err)
+        
+    def debug (self, message) :
+        # change True to False or vice versa
+        if (False): print message
+        
 
