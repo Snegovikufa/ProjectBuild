@@ -75,7 +75,7 @@ class ProjectBuildCommand (sublime_plugin.TextCommand) :
 	# under the Packages folder (e.g. Packages/User).
 	# Many packages include their own build systems."
 	#
-        # so full path to Build System file is uniquely determined
+        # so full path of Build System file is uniquely determined
 
         build_filename_fullpath = os.path.normpath(os.path.join(os.path.dirname(sublime.packages_path()),build_filename))
 	# it must be exist and it must be a file
