@@ -48,8 +48,8 @@ Features / Usage
           { "keys": ["shift+f10"], "command" : "project_build"}
         ]
 
- * Create your own Build System "Tools"->"Build System"->"New Build System" like this:
-
+ * Create your own Build System "Tools"->"Build System"->"New Build System", for example with Ant using - "AntBuildSystem", like this:
+	
         {
             "cmd": ["ant.bat"],
             "working_dir": "${project_path}",
@@ -65,11 +65,13 @@ Features / Usage
             ]
         }
 
- * Create <name>.sublime-workspace file in project root folder and edit like this :
+ After that don't foget to choose this Build System in Sublime Text 2. Of course you can use anyone standart Build System.
 
-        {
-            "build-system" : "Your_build_system_name.sublime-build"
-        }
+ * Just save Sublime project in some root folder of your project «Project»->«Save Project As...». So automatically  "<name>.sublime-workspace" file must be created with json-content like this:
+
+        ...
+            "build-system" : "Packages/User/AntBuildSystem.sublime-build"
+        ...
 
  * Press "Shift+F10" and select arguments for build.
 
